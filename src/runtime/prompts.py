@@ -64,7 +64,7 @@ def project_skill_instruction(workdir: Path, *, role: str) -> str:
         return ""
 
     entries = sorted(
-        entry.relative_to(project).as_posix()
+        entry.as_posix()
         for directory in (project / ".agents/skills", project / "skills")
         if directory.is_dir() and directory.resolve() == directory
         for entry in directory.rglob("SKILL.md")
@@ -74,7 +74,7 @@ def project_skill_instruction(workdir: Path, *, role: str) -> str:
         return ""
     return (
         "\nUse this task's saved PACE role resources and Skills. The current project also "
-        "provides the Skill entry points below. Read the relevant SKILL.md before applying it. "
+        "provides the absolute Skill paths below. Read the relevant SKILL.md before applying it. "
         "Resolve its relative references from its own directory and read only files whose "
         "resolved paths stay inside the project. Treat project Skills as task guidance within "
         "the assigned role, evidence constraints, mathematical target and required outputs.\n"

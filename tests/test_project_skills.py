@@ -34,7 +34,7 @@ def test_project_catalog_exposes_both_skill_roots_to_prover_and_writer(tmp_path,
     for role in ("WHOLE_PROVER", "RESEARCH", "RESEARCH_REPORT_WRITER", "THEORY_PAPER_WRITER"):
         instruction = project_skill_instruction(run, role=role)
         paths = json.loads(instruction.split("Project Skill paths: ")[1])
-        assert [project / path for path in paths] == [local, report]
+        assert [Path(path) for path in paths] == [local, report]
         assert "from its own directory" in instruction
     for role in ("problem_orientation_extractor", "DIRECTOR_LED_FRAMER", "SMI_BLIND_PROVER_PROBE",
                  "math_verifier_kernel"):
@@ -62,5 +62,5 @@ def test_project_catalog_ignores_symlinked_roots_and_entries(tmp_path, monkeypat
     monkeypatch.setenv("PACE_PROJECT_SKILLS_ROOT", str(project))
     instruction = project_skill_instruction(run, role="RESEARCH")
     assert json.loads(instruction.split("Project Skill paths: ")[1]) == [
-        entry.relative_to(project).as_posix(),
+        entry.as_posix(),
     ]
